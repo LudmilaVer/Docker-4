@@ -1,0 +1,33 @@
+version: '3.8'  # Указываем версию Docker Compose
+
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"  # Пробрасываем порт 8080 на порт 80 контейнера
+    networks:
+      - mynetwork
+
+  redis:
+    image: redis:latest
+    networks:
+      - mynetwork
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword  # Пароль для root
+      MYSQL_DATABASE: mydatabase         # Имя создаваемой базы данных
+      MYSQL_USER: myuser                 # Имя пользователя для базы данных
+      MYSQL_PASSWORD: mypassword         # Пароль пользователя
+    volumes:
+      - mysql_data:/var/lib/mysql  # Volume для хранения данных базы данных
+    networks:
+      - mynetwork
+
+volumes:
+  mysql_data:  # Определение volume для MySQL
+
+networks:
+  mynetwork:   # Определение сети для всех сервисов
+
